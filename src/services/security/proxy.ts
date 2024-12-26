@@ -1,5 +1,4 @@
-import { HttpsProxyAgent } from 'https-proxy-agent';
-import axios from 'axios';
+import { HttpsProxyAgent, HttpsProxyAgentOptions } from 'https-proxy-agent';
 
 interface Proxy {
   host: string;
@@ -20,9 +19,17 @@ export function getNextProxy(): Proxy {
   return proxy;
 }
 
-export function createProxyAgent(proxy: Proxy): HttpsProxyAgent {
+interface MyProxyOptions {
+  host: string;
+  port: number;
+  auth?: string;
+}
+
+
+export function createProxyAgent(proxy: Proxy): HttpsProxyAgent<HttpsProxyAgentOptions<MyProxyOptions>> {
   const auth = proxy.username && proxy.password 
     ? `${proxy.username}:${proxy.password}@` 
     : '';
-    
-  return new HttpsProxyAgent(`https://${auth}${proxy.host}:${proxy.port}`);
+
+  return new HttpsProxyAgent<HttpsProxyAgentOptions<MyProxyOptions>>(`https://${auth}${proxy.host}:${proxy.port}`);
+}
