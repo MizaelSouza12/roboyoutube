@@ -19,6 +19,10 @@ export function getNextProxy(): Proxy {
   return proxy;
 }
 
+export function getCurrentProxy(): Proxy {
+  return proxyList[currentProxyIndex];
+}
+
 interface MyProxyOptions {
   host: string;
   port: number;
